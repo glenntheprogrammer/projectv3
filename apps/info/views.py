@@ -9,7 +9,7 @@ from django.core.validators import validate_email
 from django.db import IntegrityError
 from django.db.models import Q
 
-from apps.scoping import scoped_info, scoped_infos
+from apps.core.scoping import scoped_info, scoped_infos
 from .models import Info
 
 MIN_AGE = 1
