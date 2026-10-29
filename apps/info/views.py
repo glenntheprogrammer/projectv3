@@ -35,7 +35,9 @@ def info_list_page(request):
         infos_list = infos_list.filter(
             Q(name__icontains=query) |
             Q(address__icontains=query) |
-            Q(email__icontains=query)
+            Q(email__icontains=query) |
+            Q(phone_number__icontains=query) |
+            Q(marital_status__icontains=query)
         )
 
     paginator = Paginator(infos_list, 10)
@@ -59,13 +61,17 @@ def info_list_ajax(request):
         infos_list = infos_list.filter(
             Q(name__icontains=query) |
             Q(address__icontains=query) |
-            Q(email__icontains=query)
+            Q(email__icontains=query) |
+            Q(phone_number__icontains=query) |
+            Q(marital_status__icontains=query)
         )
 
     paginator = Paginator(infos_list, 10)
     page_number = request.GET.get('page', 1)
     infos = paginator.get_page(page_number)
-    data = list(infos.object_list.values('id', 'name', 'age', 'address', 'email'))
+    data = list(infos.object_list.values(
+        'id', 'name', 'age', 'address', 'email', 'phone_number', 'marital_status'
+    ))
     return JsonResponse({
         'data': data,
         'has_next': infos.has_next(),
@@ -86,6 +92,8 @@ def info_get_ajax(request, pk):
         'age': info.age,
         'address': info.address,
         'email': info.email,
+        'phone_number': info.phone_number,
+        'marital_status': info.marital_status,
     })
 
 
@@ -106,6 +114,8 @@ def info_save_ajax(request):
     age = request.POST.get('age', '').strip()
     address = request.POST.get('address', '').strip()
     email = request.POST.get('email', '').strip()
+    phone_number = request.POST.get('phone_number', '').strip()
+    marital_status = request.POST.get('marital_status', '').strip()
 
     if not name:
         return JsonResponse({'error': 'Name is required.'}, status=400)
@@ -130,10 +140,18 @@ def info_save_ajax(request):
         except ValidationError:
             return JsonResponse({'error': 'Enter a valid email address.'}, status=400)
 
+    if marital_status not in Info.MaritalStatus.values:
+        return JsonResponse({'error': 'Choose Married or Single for status.'}, status=400)
+
+    if len(phone_number) > 30:
+        return JsonResponse({'error': 'Mobile phone number must be 30 characters or fewer.'}, status=400)
+
     info.name = name
     info.age = age_value
     info.address = address
     info.email = email
+    info.phone_number = phone_number
+    info.marital_status = marital_status
 
     if not info.pk:
         info.user = request.user
@@ -158,6 +176,8 @@ def info_save_ajax(request):
         'age': info.age,
         'address': info.address,
         'email': info.email,
+        'phone_number': info.phone_number,
+        'marital_status': info.marital_status,
     })
 
 

@@ -198,6 +198,35 @@ html {
   border-radius: var(--tblr-border-radius);
 }
 
+.crud-toast {
+  --tblr-toast-color: #17211b;
+  --tblr-toast-bg: #f0fdf4;
+  --tblr-toast-border-color: #bbf7d0;
+  color: #17211b;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-left: 4px solid #22c55e;
+  border-radius: var(--tblr-border-radius-lg);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14);
+}
+
+.crud-toast .toast-body {
+  color: #17211b;
+  font-weight: 500;
+}
+
+.crud-toast-icon {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  margin-left: 0.875rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  color: #15803d;
+  background-color: #dcfce7;
+}
+
 .form-control:focus,
 .form-select:focus {
   border-color: rgba(var(--tblr-primary-rgb), 0.55);

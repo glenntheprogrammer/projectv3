@@ -376,7 +376,7 @@
         })
         .then(() => {
             bootstrap.Modal.getInstance(editModal).hide();
-            window.location.reload();
+            window.refreshMainContent();
         })
         .catch((err) => {
             showFormError(err.message);

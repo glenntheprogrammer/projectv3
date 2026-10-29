@@ -6,10 +6,21 @@ from django.db import models
 
 
 class Info(models.Model):
+    class MaritalStatus(models.TextChoices):
+        MARRIED = 'married', 'Married'
+        SINGLE = 'single', 'Single'
+
     name = models.CharField(max_length=255)
     age = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(150)])
     address = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, blank=True)
+    phone_number = models.CharField(max_length=30, blank=True)
+    marital_status = models.CharField(
+        max_length=10,
+        choices=MaritalStatus.choices,
+        blank=True,
+        default='',
+    )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='infos',
